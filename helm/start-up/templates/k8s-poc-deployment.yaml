@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: k8s-poc-{{ .Values.global.step }}
+    step: {{ .Values.global.step }}
+  name: k8s-poc-depl
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: k8s-poc-{{ .Values.global.step }}
+      step: {{ .Values.global.step }}
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: k8s-poc-{{ .Values.global.step }}
+        step: {{ .Values.global.step }}
+    spec:
+      containers:
+      - image: msigismondi/k8s-poc:alpha
+        name: k8s-poc
+        resources: {}
+        args: ["--spring.config.location=config/application.properties"]
+        envFrom:
+        - secretRef:
+            name: app-secret
+        volumeMounts:
+        - name: app-prop-volume
+          mountPath: /config/
+          readOnly: true
+      volumes:
+      - name: app-prop-volume
+        configMap: 
+          name: application-properties
+status: {}

@@ -1,0 +1,4 @@
+1. Get the application URL by running these commands:
+
+  - kubectl run curler --image=radial/busyboxplus -it --rm
+  - curl http://k8s-poc-svc:{{ .Values.service.port }}/v1/echoService/echo/it-works

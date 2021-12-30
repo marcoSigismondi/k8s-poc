@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: k8s-poc
+  name: k8s-poc-blue
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: k8s-poc-blue
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: k8s-poc-blue
+    spec:
+      containers:
+      - image: msigismondi/k8s-poc:alpha
+        name: k8s-poc-blue
+        resources: {}
+        args: ["--spring.config.location=config/application.properties"]
+        envFrom:
+        - secretRef:
+            name: app-secret
+        volumeMounts:
+        - name: app-prop-volume
+          mountPath: /config/
+          readOnly: true
+      volumes:
+      - name: app-prop-volume
+        configMap: 
+          name: application-properties
+status: {}

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: k8s-poc-blue
+  name: k8s-poc-lb
+spec:
+  ports:
+  - port: 8081
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    status: live
+  type: LoadBalancer
+status:
+  loadBalancer: {}
